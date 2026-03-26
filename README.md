@@ -1,84 +1,144 @@
-<<<<<<< HEAD
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 🎟️ Coupon CSV Import API with Variant
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend service for importing unique coupon codes from CSV files into MongoDB, where each row is stored as a single document with an associated `variantId`.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 📖 Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This service handles bulk import of coupon codes from CSV files.
+Each row in the CSV is parsed and inserted into MongoDB as a single document, including a `variantId` to identify the coupon variant.
 
-## Installation
+---
 
-```bash
-$ npm install
+## 🚀 Features
+
+-   📥 Bulk import coupon codes from CSV
+-   🧩 Each CSV row → 1 MongoDB document with `variantId`
+-   🔍 Validate uniqueness before insert
+-   ⚡ Efficient bulk insert for large datasets
+-   📝 Logging import activity
+
+---
+
+## 🛠️ Tech Stack
+
+-   NestJS
+-   MongoDB
+
+---
+
+## ⚙️ Installation
+
+```bash id="f4p9z1"
+git clone <your-repo-url>
+cd coupon-csv-import-api
+npm install
 ```
 
-## Configuration
+---
 
-```bash
-# environment
-$ cp .env.example .env
+## ▶️ Running the App
+
+```bash id="w8x2k4"
+npm run start:dev
 ```
 
-## Running the app
+---
 
-```bash
-# development
-$ npm run start
+## 🔑 Environment Variables
 
-# watch mode
-$ npm run start:dev
+```env id="y7m2k3"
+# SERVICE NODE ENV
+NODE_ENV=development
 
-# production mode
-$ npm run start:prod
+# SERVICE API
+SERVICE_PORT=5000
+SERVICE_NAME=COUPON-API
+SERVICE_PREFIX=api
+SERVICE_DEFAULT_VERSION=1
+SERVICE_DOCS=1
+SERVICE_BASE_URL=http://localhost:5000
+
+# MONGODB
+SERVICE_MONGO_DB_HOST=mongodb://127.0.0.1:27017/db_test
+SERVICE_MONGO_DB_USER=admin
+SERVICE_MONGO_DB_PASS=123
+SERVICE_MONGO_DB_AUTH=admin
+SERVICE_MONGO_DB_REPLICA=
 ```
 
-## Test
+---
 
-```bash
-# unit tests
-$ npm run test
+## 🔄 Processing Flow
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```text id="p3k7zr"
+Upload CSV File + variantId
+       ↓
+Parse CSV Rows
+       ↓
+Validate uniqueness per code
+       ↓
+Insert Each Row as Document into MongoDB with variantId
+       ↓
+Return Import Summary (success / failed)
 ```
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 📌 Main Responsibilities
 
-## Stay in touch
+-   Receive CSV file uploads with `variantId`
+-   Parse each CSV row
+-   Validate uniqueness of `code`
+-   Insert each row as single document with `variantId` into MongoDB
+-   Log the import results for auditing
 
--   Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
--   Website - [https://nestjs.com](https://nestjs.com/)
--   Twitter - [@nestframework](https://twitter.com/nestframework)
+---
 
-## License
+## 📂 Example CSV
 
-Nest is [MIT licensed](LICENSE).
-=======
-# project
->>>>>>> c580f017b46ffeab944be48e0d89615adb83060c
+```csv id="e61zoi"
+JUDUL
+ABC123
+DEF456
+GHI789
+```
+
+### Example MongoDB Insert (with variantId)
+
+```json id="n9q2kx"
+{ "code": "ABC123", "variantId": "VAR001", "createdAt": "2026-03-26T00:00:00Z" }
+{ "code": "DEF456", "variantId": "VAR001", "createdAt": "2026-03-26T00:01:00Z" }
+{ "code": "GHI789", "variantId": "VAR001", "createdAt": "2026-03-26T00:02:00Z" }
+```
+
+---
+
+## 📂 Project Structure
+
+```text id="v8m2pw"
+src/
+├── modules/
+│   ├── import/
+│   ├── parser/
+│   ├── coupon/
+├── common/
+├── config/
+└── main.ts
+```
+
+---
+
+## ⚠️ Notes
+
+-   First row in CSV is header (`JUDUL`)
+-   Each upload **must include `variantId`**
+-   Large CSV files should be imported in batches
+-   Index `code` and `variantId` fields in MongoDB for fast lookup
+
+---
+
+## 📄 License
+
+MIT License
